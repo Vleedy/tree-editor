@@ -1,0 +1,141 @@
+$treeNodesBackgroundColor: rgb(66, 69, 73);
+$treeContainerBackgroundColor: rgb(40, 43, 48);
+$offset: 8px;
+$radius: 4px;
+$connector-color: rgb(101, 101, 106);
+$connector-offset: -10px;
+$connector-length: 8px;
+$connector-width: 1px;
+
+@mixin connector-base {
+  position: absolute;
+  left: $connector-offset;
+  content: '';
+  width: $connector-length;
+  border-left: $connector-width solid $connector-color;
+}
+
+@mixin block-styles {
+  background-color: $treeNodesBackgroundColor;
+  border-radius: $radius;
+  border: $connector-width solid $connector-color;
+  transition: background-color 0.5s ease;
+  height: 40px;
+}
+
+.tree-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: $treeContainerBackgroundColor;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.05), 0px 4px 4px 0px rgba(0, 0, 0, 0.05),
+    0px -4px 4px 0px rgba(0, 0, 0, 0.05), 4px 0px 4px 0px rgba(0, 0, 0, 0.05),
+    -4px 0px 4px 0px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+    width: 4px;
+    background-color: $treeContainerBackgroundColor;
+    border-radius: 0 4px 4px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(66, 69, 73);
+    border-radius: 0.5rem;
+  }
+}
+
+.tree {
+  width: 100%;
+  position: relative;
+  margin: 0;
+  color: rgba(255, 250, 250, 0.802);
+  padding: 0;
+  ul {
+    padding-left: 30px;
+  }
+  li,
+  summary {
+    list-style: none;
+
+    &::marker,
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  summary {
+    cursor: pointer;
+    @include block-styles;
+    width: 100%;
+    padding: 0 $offset 0 0;
+    margin-bottom: $offset * 0.5;
+  }
+
+  li {
+    position: relative;
+
+    &::before,
+    &::after {
+      @include connector-base;
+    }
+
+    &::before {
+      top: 0;
+      border-bottom: $connector-width solid $connector-color;
+      border-radius: 0 0 0 $radius;
+      height: calc(1rem + $offset/2);
+    }
+
+    &::after {
+      bottom: 0;
+      height: calc(100% + $offset/2);
+    }
+
+    // Стили для последнего уровня
+    &:last-child {
+      &::before {
+        height: calc(1rem + 8px);
+        transform: translateY(-(calc($offset / 2)));
+      }
+
+      &::after {
+        display: none;
+      }
+    }
+
+    // Стили для вложенных элементов
+    > .summary-content {
+      @include block-styles;
+      width: 100%;
+      margin-bottom: calc($offset / 2);
+      padding: $offset;
+    }
+  }
+
+  // Стили для первого уровня
+  > li {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  .summary-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  details[open] > summary button:first-of-type > svg {
+    transform: rotate(90deg);
+  }
+}
