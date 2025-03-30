@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-import { IAlert } from '../../../shared/Alert/types';
+import { IAlert } from './types';
 
 const useAlert = () => {
   const [alertMessage, setAlertMessage] = useState<IAlert | null>(null);
