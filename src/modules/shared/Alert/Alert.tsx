@@ -23,7 +23,7 @@ const Alert: React.FC<IAlertProps> = ({ message, severity, autoClose, onClose })
     return () => {
       clearTimeout(timeId);
     };
-  }, [autoClose, onClose]);
+  }, [autoClose, message, onClose]);
 
   return (
     <MuiAlert className="alert" variant="filled" severity={severity} onClose={onClose}>

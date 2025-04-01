@@ -40,7 +40,6 @@ export const extractTreeAction = (e: React.MouseEvent<HTMLUListElement>): INodeA
   };
 };
 
-export const nodeClickHandler = (e: React.MouseEvent<HTMLUListElement>) => e.stopPropagation();
 export const getModalTitle = (actionType: NodeActionType) => {
   const titles = {
     add: 'Add Child Node',
